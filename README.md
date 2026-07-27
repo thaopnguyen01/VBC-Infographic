@@ -1,1 +1,1 @@
-value_based_care_infographic
+vbc_infographic
