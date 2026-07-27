@@ -1,0 +1,1132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Value-Based Care Intelligence</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy:   #0F1F3D;
+    --navy2:  #162847;
+    --navy3:  #1E3459;
+    --teal:   #2D9B8A;
+    --teal2:  #37B89F;
+    --amber:  #E8A030;
+    --coral:  #E05C5C;
+    --cream:  #F8F5F0;
+    --cream2: #EDE8E0;
+    --white:  #FFFFFF;
+    --text:   #1A2B47;
+    --text2:  #4A6080;
+    --text3:  #7A92AE;
+    --border: rgba(45,155,138,0.18);
+    --shadow: 0 4px 24px rgba(15,31,61,0.12);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--navy);
+    color: var(--cream);
+    min-height: 100vh;
+  }
+
+  /* ── HEADER ── */
+  .header {
+    background: linear-gradient(135deg, var(--navy) 0%, var(--navy3) 100%);
+    padding: 40px 48px 0;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+    overflow: hidden;
+  }
+  .header::before {
+    content: '';
+    position: absolute;
+    top: -80px; right: -80px;
+    width: 320px; height: 320px;
+    background: radial-gradient(circle, rgba(45,155,138,0.15) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .header-inner { max-width: 1100px; margin: 0 auto; }
+  .header-eyebrow {
+    font-size: 11px; font-weight: 600;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--teal); margin-bottom: 12px;
+  }
+  .header h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(28px, 4vw, 46px);
+    line-height: 1.1;
+    color: var(--white);
+    margin-bottom: 10px;
+  }
+  .header h1 em { font-style: italic; color: var(--teal2); }
+  .header-sub {
+    font-size: 15px; color: var(--text3);
+    max-width: 600px; line-height: 1.6;
+    margin-bottom: 32px;
+  }
+
+  /* ── TABS ── */
+  .tab-bar {
+    display: flex; gap: 0;
+    border-bottom: none;
+    overflow-x: auto;
+  }
+  .tab-btn {
+    padding: 12px 22px;
+    font-size: 13px; font-weight: 500;
+    color: var(--text3);
+    background: none; border: none;
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    white-space: nowrap;
+    transition: color 0.2s, border-color 0.2s;
+    letter-spacing: 0.02em;
+  }
+  .tab-btn:hover { color: var(--cream); }
+  .tab-btn.active {
+    color: var(--teal2);
+    border-bottom-color: var(--teal2);
+  }
+
+  /* ── CONTENT ── */
+  .content {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 40px 48px 80px;
+  }
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  /* ── SECTION TITLE ── */
+  .section-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 28px; color: var(--white);
+    margin-bottom: 8px;
+  }
+  .section-title em { font-style: italic; color: var(--teal2); }
+  .section-desc {
+    font-size: 14px; color: var(--text3);
+    max-width: 680px; line-height: 1.7;
+    margin-bottom: 36px;
+  }
+
+  /* ── CARDS ── */
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 16px;
+  }
+  .card {
+    background: var(--navy2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+  .card:hover { border-color: var(--teal); transform: translateY(-2px); }
+  .card-icon {
+    font-size: 28px; margin-bottom: 12px; display: block;
+  }
+  .card-label {
+    font-size: 10px; font-weight: 700;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--teal); margin-bottom: 6px;
+  }
+  .card h3 {
+    font-size: 16px; font-weight: 600;
+    color: var(--white); margin-bottom: 8px;
+    line-height: 1.3;
+  }
+  .card p { font-size: 13px; color: var(--text3); line-height: 1.65; }
+  .card.amber-accent { border-left: 3px solid var(--amber); }
+  .card.coral-accent { border-left: 3px solid var(--coral); }
+  .card.teal-accent  { border-left: 3px solid var(--teal); }
+
+  /* ── FLOW DIAGRAM ── */
+  .flow {
+    display: flex;
+    align-items: stretch;
+    gap: 0;
+    overflow-x: auto;
+    padding-bottom: 8px;
+    margin-bottom: 32px;
+  }
+  .flow-step {
+    flex: 1;
+    min-width: 140px;
+    background: var(--navy2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px 16px;
+    text-align: center;
+    position: relative;
+  }
+  .flow-step + .flow-step { margin-left: 24px; }
+  .flow-step + .flow-step::before {
+    content: '→';
+    position: absolute;
+    left: -20px; top: 50%;
+    transform: translateY(-50%);
+    color: var(--teal);
+    font-size: 18px;
+  }
+  .flow-num {
+    font-family: 'DM Serif Display', serif;
+    font-size: 32px; color: var(--teal2);
+    opacity: 0.4; line-height: 1;
+    margin-bottom: 8px;
+  }
+  .flow-title {
+    font-size: 13px; font-weight: 600;
+    color: var(--white); margin-bottom: 6px;
+  }
+  .flow-desc { font-size: 11px; color: var(--text3); line-height: 1.5; }
+
+  /* ── COST RIVER ── */
+  .cost-river {
+    position: relative;
+    margin-bottom: 36px;
+    overflow: hidden;
+    border-radius: 12px;
+    background: var(--navy2);
+    border: 1px solid var(--border);
+    padding: 32px 24px;
+  }
+  .river-label {
+    font-size: 11px; font-weight: 700;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--teal); margin-bottom: 20px;
+  }
+  .river-track {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    overflow-x: auto;
+    padding-bottom: 4px;
+  }
+  .river-node {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 110px;
+    flex: 1;
+    position: relative;
+  }
+  .river-connector {
+    flex: 0 0 32px;
+    height: 3px;
+    background: linear-gradient(to right, var(--teal), var(--amber));
+    position: relative;
+    top: -22px;
+  }
+  .river-bubble {
+    width: 56px; height: 56px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px;
+    margin-bottom: 8px;
+    border: 2px solid;
+    flex-shrink: 0;
+  }
+  .river-bubble.low   { background: rgba(45,155,138,0.12); border-color: var(--teal); }
+  .river-bubble.mid   { background: rgba(232,160,48,0.12); border-color: var(--amber); }
+  .river-bubble.high  { background: rgba(224,92,92,0.18); border-color: var(--coral); }
+  .river-name { font-size: 11px; font-weight: 600; color: var(--white); text-align: center; margin-bottom: 3px; }
+  .river-cost { font-size: 10px; color: var(--text3); text-align: center; line-height: 1.3; }
+  .river-cost.big { color: var(--coral); font-weight: 600; }
+
+  /* ── DATA STACK ── */
+  .data-stack {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+  .stack-layer {
+    background: var(--navy2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px;
+  }
+  .stack-layer h4 {
+    font-size: 13px; font-weight: 700;
+    color: var(--teal2); margin-bottom: 10px;
+    text-transform: uppercase; letter-spacing: 0.06em;
+    font-size: 11px;
+  }
+  .stack-item {
+    display: flex; align-items: flex-start;
+    gap: 10px; margin-bottom: 10px;
+  }
+  .stack-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--teal);
+    flex-shrink: 0; margin-top: 5px;
+  }
+  .stack-dot.amber { background: var(--amber); }
+  .stack-dot.coral { background: var(--coral); }
+  .stack-text { font-size: 13px; color: var(--cream2); line-height: 1.5; }
+  .stack-sub  { font-size: 11px; color: var(--text3); }
+
+  /* ── MEASUREMENT TABLE ── */
+  .meas-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 32px;
+  }
+  .meas-table th {
+    font-size: 11px; font-weight: 700;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--teal2); padding: 10px 16px;
+    background: rgba(45,155,138,0.1);
+    border-bottom: 1px solid var(--border);
+    text-align: left;
+  }
+  .meas-table td {
+    font-size: 13px; color: var(--cream2);
+    padding: 12px 16px;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    vertical-align: top;
+    line-height: 1.55;
+  }
+  .meas-table tr:hover td { background: rgba(45,155,138,0.05); }
+  .metric-name { font-weight: 600; color: var(--white); }
+  .metric-sub  { font-size: 11px; color: var(--text3); margin-top: 2px; }
+  .badge {
+    display: inline-block;
+    font-size: 10px; font-weight: 700;
+    letter-spacing: 0.06em; text-transform: uppercase;
+    padding: 2px 8px; border-radius: 999px;
+  }
+  .badge.teal   { background: rgba(45,155,138,0.18); color: var(--teal2); }
+  .badge.amber  { background: rgba(232,160,48,0.15); color: var(--amber); }
+  .badge.coral  { background: rgba(224,92,92,0.15); color: var(--coral); }
+
+  /* ── PARALLEL TABLE ── */
+  .parallel-grid {
+    display: grid; gap: 12px;
+  }
+  .parallel-row {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 12px; align-items: center;
+    background: var(--navy2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px 20px;
+    transition: border-color 0.2s;
+  }
+  .parallel-row:hover { border-color: var(--teal); }
+  .parallel-cell {
+    font-size: 13px; line-height: 1.5;
+  }
+  .parallel-left  { color: var(--cream2); }
+  .parallel-right { color: var(--teal2); }
+  .parallel-arrow {
+    font-size: 18px; color: var(--teal);
+    text-align: center; flex-shrink: 0;
+  }
+  .parallel-label {
+    font-size: 10px; font-weight: 700;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .parallel-label.left  { color: var(--text3); }
+  .parallel-label.right { color: var(--teal); }
+
+  /* ── PIPELINE VISUAL ── */
+  .pipeline {
+    background: var(--navy2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 28px;
+    margin-bottom: 32px;
+  }
+  .pipeline-title {
+    font-size: 11px; font-weight: 700;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--teal); margin-bottom: 20px;
+  }
+  .pipeline-steps {
+    display: flex; flex-direction: column; gap: 0;
+  }
+  .pipe-step {
+    display: flex; align-items: flex-start; gap: 16px;
+    padding: 14px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+  }
+  .pipe-step:last-child { border-bottom: none; }
+  .pipe-icon {
+    width: 36px; height: 36px;
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px; flex-shrink: 0;
+  }
+  .pipe-icon.teal  { background: rgba(45,155,138,0.15); }
+  .pipe-icon.amber { background: rgba(232,160,48,0.12); }
+  .pipe-icon.coral { background: rgba(224,92,92,0.12); }
+  .pipe-icon.navy  { background: rgba(255,255,255,0.05); }
+  .pipe-body h4 { font-size: 14px; font-weight: 600; color: var(--white); margin-bottom: 3px; }
+  .pipe-body p  { font-size: 12px; color: var(--text3); line-height: 1.55; }
+
+  /* ── DIVIDER ── */
+  .divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 32px 0;
+  }
+
+  /* ── STAT ROW ── */
+  .stat-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+  .stat-box {
+    background: var(--navy2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+  }
+  .stat-num {
+    font-family: 'DM Serif Display', serif;
+    font-size: 32px; color: var(--teal2);
+    line-height: 1; margin-bottom: 6px;
+  }
+  .stat-num.amber { color: var(--amber); }
+  .stat-num.coral { color: var(--coral); }
+  .stat-label { font-size: 12px; color: var(--text3); line-height: 1.4; }
+
+  @media (max-width: 640px) {
+    .header { padding: 28px 20px 0; }
+    .content { padding: 28px 20px 60px; }
+    .data-stack { grid-template-columns: 1fr; }
+    .parallel-row { grid-template-columns: 1fr; }
+    .parallel-arrow { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-inner">
+    <p class="header-eyebrow">Healthcare Intelligence · Value-Based Care</p>
+    <h1>How Value-Based Care <em>Actually Works</em></h1>
+    <p class="header-sub">A structured overview of the ecosystem, patient lifecycle, data infrastructure, and measurement framework — mapped to familiar regulatory intelligence concepts.</p>
+    <div class="tab-bar">
+      <button class="tab-btn active" data-tab="ecosystem">Ecosystem</button>
+      <button class="tab-btn" data-tab="lifecycle">Patient Lifecycle & Costs</button>
+      <button class="tab-btn" data-tab="data">Data Foundation</button>
+      <button class="tab-btn" data-tab="measurement">Measurement</button>
+      <button class="tab-btn" data-tab="parallel">Your Parallel</button>
+    </div>
+  </div>
+</div>
+
+<div class="content">
+
+  <!-- ══════════════════════════════════════════ -->
+  <!-- TAB 1: ECOSYSTEM                          -->
+  <!-- ══════════════════════════════════════════ -->
+  <div class="tab-panel active" id="tab-ecosystem">
+    <p class="section-title">The <em>Value-Based Care</em> Ecosystem</p>
+    <p class="section-desc">Value-based care flips the traditional healthcare payment model — rewarding physicians for keeping patients healthy rather than for volume of services. Aledade sits at the center of this ecosystem, enabling independent primary care practices to participate and succeed.</p>
+
+    <div class="stat-row">
+      <div class="stat-box">
+        <div class="stat-num">$5.3T</div>
+        <div class="stat-label">US healthcare spend in 2024</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-num">14.3M</div>
+        <div class="stat-label">Medicare patients in ACOs (2026)</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-num amber">3,000+</div>
+        <div class="stat-label">Primary care practices in Aledade's network</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-num">93%</div>
+        <div class="stat-label">Aledade ACOs achieving savings in 2024</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-num coral">$390K</div>
+        <div class="stat-label">Average shared savings per practice</div>
+      </div>
+    </div>
+
+    <div class="card-grid">
+      <div class="card teal-accent">
+        <span class="card-icon">🏥</span>
+        <div class="card-label">Who delivers</div>
+        <h3>Independent Primary Care Practices</h3>
+        <p>The frontline of healthcare. Physicians who see patients, manage chronic diseases, coordinate specialist referrals, and order tests. Historically paid per service — now rewarded for outcomes.</p>
+      </div>
+      <div class="card teal-accent">
+        <span class="card-icon">🏛️</span>
+        <div class="card-label">Who regulates & pays</div>
+        <h3>CMS — Centers for Medicare & Medicaid Services</h3>
+        <p>Sets ACO program rules, benchmarks, quality measures, and payment terms. Runs MSSP — the Medicare Shared Savings Program — which is Aledade's core contract vehicle.</p>
+      </div>
+      <div class="card amber-accent">
+        <span class="card-icon">🤝</span>
+        <div class="card-label">The enabler</div>
+        <h3>Aledade</h3>
+        <p>The largest network of independent primary care in the US. Provides data analytics, workflow tools, payer contracts, and coaching to help practices succeed in value-based care.</p>
+      </div>
+      <div class="card amber-accent">
+        <span class="card-icon">📋</span>
+        <div class="card-label">The contract</div>
+        <h3>MSSP ACO</h3>
+        <p>Medicare Shared Savings Program. Practices manage an attributed patient panel against a cost benchmark. Spend less than benchmark + hit quality targets = share the savings with CMS.</p>
+      </div>
+      <div class="card coral-accent">
+        <span class="card-icon">⚖️</span>
+        <div class="card-label">The old model</div>
+        <h3>Fee-for-Service</h3>
+        <p>Pay per visit, test, and procedure. More volume = more revenue. No incentive to coordinate care or prevent illness. CMS is actively pushing away from this model.</p>
+      </div>
+      <div class="card coral-accent">
+        <span class="card-icon">🎯</span>
+        <div class="card-label">The new model</div>
+        <h3>Value-Based Care</h3>
+        <p>Pay for keeping patients healthy and reducing unnecessary costs. Coordination is financially rewarded. Prevention over treatment. Better data = better outcomes = shared savings.</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <p class="section-title" style="font-size:20px; margin-bottom:16px;">Key Terminology</p>
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-label">Benchmark</div>
+        <h3>Expected Cost Threshold</h3>
+        <p>CMS sets expected spending for each ACO's patient population based on historical costs. Spending below benchmark generates savings. Above benchmark = potential losses (two-sided tracks).</p>
+      </div>
+      <div class="card">
+        <div class="card-label">Attribution</div>
+        <h3>Patient Assignment</h3>
+        <p>Patients are assigned to an ACO based on which primary care physician they visit most. The ACO is then responsible for that patient's total cost of care — including specialists and hospitalizations.</p>
+      </div>
+      <div class="card">
+        <div class="card-label">Quality Measures</div>
+        <h3>HEDIS & eCQMs</h3>
+        <p>Clinical performance metrics ACOs must hit — diabetes control, blood pressure management, cancer screenings. Poor quality scores reduce shared savings even if cost targets are met.</p>
+      </div>
+      <div class="card">
+        <div class="card-label">Risk Adjustment</div>
+        <h3>HCC Coding</h3>
+        <p>Hierarchical Condition Categories. Adjusts payments based on patient complexity — sicker patients generate higher risk scores and higher expected costs. Accurate documentation is critical.</p>
+      </div>
+      <div class="card">
+        <div class="card-label">Care Gap</div>
+        <h3>Missed Preventive Care</h3>
+        <p>A preventive service or chronic disease management task that should have happened but didn't. Example: diabetic patient with no HbA1c test in 12 months. Closing gaps improves quality scores.</p>
+      </div>
+      <div class="card">
+        <div class="card-label">Shared Savings</div>
+        <h3>The Financial Reward</h3>
+        <p>When an ACO spends less than benchmark and meets quality thresholds, CMS shares the difference. Aledade takes a portion; the rest goes to the physician practice. This is how practices profit from keeping people healthy.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════ -->
+  <!-- TAB 2: PATIENT LIFECYCLE                  -->
+  <!-- ══════════════════════════════════════════ -->
+  <div class="tab-panel" id="tab-lifecycle">
+    <p class="section-title">Patient Lifecycle & <em>Cost Events</em></p>
+    <p class="section-desc">Healthcare costs are not evenly distributed. A small number of high-cost events — hospitalizations, ICU stays, readmissions — drive the majority of Medicare spending. Value-based care is fundamentally about preventing these events through earlier, cheaper interventions upstream.</p>
+
+    <div class="cost-river">
+      <div class="river-label">The Cost Escalation Waterfall — Each stage is 5–10× more expensive than the stage before</div>
+      <div class="river-track">
+        <div class="river-node">
+          <div class="river-bubble low">🌱</div>
+          <div class="river-name">Prevention</div>
+          <div class="river-cost">$150–500/yr</div>
+        </div>
+        <div class="river-connector"></div>
+        <div class="river-node">
+          <div class="river-bubble low">👨‍⚕️</div>
+          <div class="river-name">Primary Care Visit</div>
+          <div class="river-cost">$150–300</div>
+        </div>
+        <div class="river-connector"></div>
+        <div class="river-node">
+          <div class="river-bubble mid">💊</div>
+          <div class="river-name">Unmanaged Chronic Disease</div>
+          <div class="river-cost">$5K–17K/yr</div>
+        </div>
+        <div class="river-connector"></div>
+        <div class="river-node">
+          <div class="river-bubble mid">🚨</div>
+          <div class="river-name">ER Visit</div>
+          <div class="river-cost">$2K–3K</div>
+        </div>
+        <div class="river-connector"></div>
+        <div class="river-node">
+          <div class="river-bubble high">🏥</div>
+          <div class="river-name">Hospitalization</div>
+          <div class="river-cost big">$15K–100K+</div>
+        </div>
+        <div class="river-connector"></div>
+        <div class="river-node">
+          <div class="river-bubble high">🔄</div>
+          <div class="river-name">Readmission</div>
+          <div class="river-cost big">+$15K–25K</div>
+        </div>
+        <div class="river-connector"></div>
+        <div class="river-node">
+          <div class="river-bubble high">🕊️</div>
+          <div class="river-name">End of Life</div>
+          <div class="river-cost big">$80K–150K/yr</div>
+        </div>
+      </div>
+    </div>
+
+    <p class="section-title" style="font-size:20px; margin-bottom:16px;">The Most Expensive Cost Drivers</p>
+    <div class="card-grid">
+      <div class="card coral-accent">
+        <span class="card-icon">🏥</span>
+        <div class="card-label">Biggest single cost event</div>
+        <h3>Hospitalization</h3>
+        <p>General inpatient: $15K–30K. ICU: $50K–100K+. Surgical: $30K–150K+. One avoided admission can generate more savings than dozens of office visits — the primary target of all ACO analytics.</p>
+      </div>
+      <div class="card coral-accent">
+        <span class="card-icon">🔄</span>
+        <div class="card-label">Expensive failure mode</div>
+        <h3>30-Day Readmission</h3>
+        <p>$15K–25K on top of the original stay. Signals a failure of care coordination. CMS penalizes hospitals for high readmission rates. ADT event notification is the key intervention tool.</p>
+      </div>
+      <div class="card amber-accent">
+        <span class="card-icon">🚨</span>
+        <div class="card-label">Preventable waste</div>
+        <h3>Avoidable ER Visits</h3>
+        <p>$2K–3K for care that a $150 primary care visit could handle. Preventable ER visits cost the US $32 billion annually. Often driven by access problems — patients who can't get same-day appointments.</p>
+      </div>
+      <div class="card amber-accent">
+        <span class="card-icon">💊</span>
+        <div class="card-label">Lifetime cost accumulator</div>
+        <h3>Chronic Disease</h3>
+        <p>Diabetes: $16,750/year vs $5,800 for non-diabetics. ESRD (dialysis): $90K+/year. The tragedy — early intervention costs hundreds. Downstream complications cost hundreds of thousands.</p>
+      </div>
+      <div class="card teal-accent">
+        <span class="card-icon">🧠</span>
+        <div class="card-label">Underappreciated driver</div>
+        <h3>Social Determinants of Health</h3>
+        <p>Housing instability raises hospitalization rates 30%. Food insecurity raises costs 27%. Lowest income quartile costs 3–4× more than highest. SDOH screening is now part of the ACO toolkit.</p>
+      </div>
+      <div class="card teal-accent">
+        <span class="card-icon">💉</span>
+        <div class="card-label">Fastest-growing category</div>
+        <h3>Pharmacy Costs</h3>
+        <p>GLP-1 medications: $10K–15K/year. Specialty drugs: $50K–500K+. Non-adherence multiplies costs — patients who stop taking medications are hospitalized at dramatically higher rates.</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <p class="section-title" style="font-size:20px; margin-bottom:16px;">The Provider Lifecycle — Where Products Are Built</p>
+    <div class="flow">
+      <div class="flow-step">
+        <div class="flow-num">01</div>
+        <div class="flow-title">Credentialing</div>
+        <div class="flow-desc">License verification, NPI registration, exclusion screening, payer enrollment</div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-num">02</div>
+        <div class="flow-title">VBC Onboarding</div>
+        <div class="flow-desc">EHR integration, panel attribution, baseline analytics, workflow training</div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-num">03</div>
+        <div class="flow-title">Panel Management</div>
+        <div class="flow-desc">Risk stratification, care gap ID, ADT notifications, medication adherence</div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-num">04</div>
+        <div class="flow-title">Quality Measurement</div>
+        <div class="flow-desc">HEDIS tracking, cost benchmarking, gap closure rates, peer comparison</div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-num">05</div>
+        <div class="flow-title">Care Intervention</div>
+        <div class="flow-desc">Patient outreach, care coordination, referral management, discharge planning</div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-num">06</div>
+        <div class="flow-title">Impact Analytics</div>
+        <div class="flow-desc">Shared savings attribution, outcome measurement, ROI demonstration</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════ -->
+  <!-- TAB 3: DATA FOUNDATION                    -->
+  <!-- ══════════════════════════════════════════ -->
+  <div class="tab-panel" id="tab-data">
+    <p class="section-title">The <em>Data Foundation</em></p>
+    <p class="section-desc">Impact analytics is only as good as the data infrastructure underneath it. Before you can measure whether interventions worked, you need clean, normalized, centralized data from multiple sources with different latencies, formats, and quality standards.</p>
+
+    <div class="pipeline">
+      <div class="pipeline-title">Data Collection — What Needs to Come In</div>
+      <div class="pipeline-steps">
+        <div class="pipe-step">
+          <div class="pipe-icon teal">📋</div>
+          <div class="pipe-body">
+            <h4>Claims Data — The Backbone</h4>
+            <p>CMS sends Medicare claims data with a 3–6 month lag. Every office visit, hospitalization, ER visit, specialist referral, and drug prescription for every attributed patient. Broad coverage but shallow clinically — tells you what was billed, not what happened clinically.</p>
+          </div>
+        </div>
+        <div class="pipe-step">
+          <div class="pipe-icon teal">🏥</div>
+          <div class="pipe-body">
+            <h4>EHR Data — The Clinical Detail</h4>
+            <p>Lab results, vital signs, diagnoses, medications, care plan notes flowing from each practice's EHR. Near real-time but narrow — only what happened at that specific practice. Unstructured physician notes require NLP to extract structured signal.</p>
+          </div>
+        </div>
+        <div class="pipe-step">
+          <div class="pipe-icon amber">⚡</div>
+          <div class="pipe-body">
+            <h4>ADT Feeds — The Early Warning System</h4>
+            <p>Admission, Discharge, Transfer notifications from hospitals in real time. Aledade knows a patient was admitted within hours — not months — enabling immediate care coordination and discharge planning intervention.</p>
+          </div>
+        </div>
+        <div class="pipe-step">
+          <div class="pipe-icon amber">💊</div>
+          <div class="pipe-body">
+            <h4>Pharmacy Data — Adherence Signals</h4>
+            <p>Part D prescription claims showing what drugs were dispensed, when, and whether refills are on track. Critical for medication adherence measurement — a key driver of chronic disease outcomes and hospitalization risk.</p>
+          </div>
+        </div>
+        <div class="pipe-step">
+          <div class="pipe-icon navy">📊</div>
+          <div class="pipe-body">
+            <h4>Patient-Reported Data — SDOH & Experience</h4>
+            <p>CAHPS surveys, SDOH screenings, patient satisfaction scores. Less structured and harder to aggregate but increasingly important for quality measures and identifying social risk factors that predict poor health outcomes.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="data-stack">
+      <div class="stack-layer">
+        <h4>Normalization Challenges</h4>
+        <div class="stack-item">
+          <div class="stack-dot"></div>
+          <div><div class="stack-text">Entity Resolution</div><div class="stack-sub">Is "Dr. Sarah Johnson NPI 1234567890" in claims the same as "S. Johnson MD" in EHR? Patient matching across sources — your similarity matching work applied to healthcare entities.</div></div>
+        </div>
+        <div class="stack-item">
+          <div class="stack-dot amber"></div>
+          <div><div class="stack-text">Code Normalization</div><div class="stack-sub">Type 2 diabetes coded as E11.9 in one system, E11 in another, free text in a third. Must normalize to ICD-10, SNOMED, RxNorm — the regulatory taxonomy layer of healthcare data.</div></div>
+        </div>
+        <div class="stack-item">
+          <div class="stack-dot coral"></div>
+          <div><div class="stack-text">Attribution Reconciliation</div><div class="stack-sub">Which patients belong to which practice? Changes quarterly as patients change care patterns. Continuous data quality challenge that directly affects benchmark calculations.</div></div>
+        </div>
+        <div class="stack-item">
+          <div class="stack-dot"></div>
+          <div><div class="stack-text">Temporal Alignment</div><div class="stack-sub">Claims: 3–6 month lag. EHR: near real-time. ADT: real-time. Measuring whether an intervention worked requires aligning events across different time horizons correctly.</div></div>
+        </div>
+      </div>
+
+      <div class="stack-layer">
+        <h4>Key Coding Systems</h4>
+        <div class="stack-item">
+          <div class="stack-dot"></div>
+          <div><div class="stack-text">ICD-10 — Diagnoses</div><div class="stack-sub">E11.9 = Type 2 diabetes. I10 = Hypertension. N18.3 = CKD stage 3. Every diagnosis in claims and EHR.</div></div>
+        </div>
+        <div class="stack-item">
+          <div class="stack-dot"></div>
+          <div><div class="stack-text">CPT — Procedures</div><div class="stack-sub">99213 = office visit. Every service billed to Medicare requires a CPT code. Drives utilization analytics.</div></div>
+        </div>
+        <div class="stack-item">
+          <div class="stack-dot amber"></div>
+          <div><div class="stack-text">LOINC — Lab Observations</div><div class="stack-sub">4548-4 = HbA1c. 33914-3 = eGFR. 8480-6 = Systolic BP. Standard codes for every lab test and vital sign measurement.</div></div>
+        </div>
+        <div class="stack-item">
+          <div class="stack-dot amber"></div>
+          <div><div class="stack-text">FHIR — Interoperability</div><div class="stack-sub">Modern REST API standard for health data exchange. Patient, Observation, Condition, Encounter resources. 21st Century Cures Act mandates EHR support.</div></div>
+        </div>
+        <div class="stack-item">
+          <div class="stack-dot coral"></div>
+          <div><div class="stack-text">NPI — Provider Identity</div><div class="stack-sub">National Provider Identifier. Unique ID for every physician, hospital, pharmacy. Links provider activity across claims — your merchant ID equivalent.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="pipeline">
+      <div class="pipeline-title">Key Clinical Metrics — What You'll Work With in Projects</div>
+      <div class="pipeline-steps">
+        <div class="pipe-step">
+          <div class="pipe-icon teal">🩸</div>
+          <div class="pipe-body">
+            <h4>HbA1c — LOINC 4548-4</h4>
+            <p>Glycated hemoglobin. Reflects average blood sugar over 3 months. ≥6.5% = diabetes. Rising trend across encounters is a classic early intervention signal. HEDIS measure: % of diabetics with HbA1c &lt; 8%.</p>
+          </div>
+        </div>
+        <div class="pipe-step">
+          <div class="pipe-icon amber">🫘</div>
+          <div class="pipe-body">
+            <h4>eGFR — LOINC 33914-3</h4>
+            <p>Estimated Glomerular Filtration Rate. Measures kidney function. &lt;60 for 3+ months = chronic kidney disease. Declining eGFR is one of the clearest longitudinal risk signals — serious, actionable, and expensive if missed.</p>
+          </div>
+        </div>
+        <div class="pipe-step">
+          <div class="pipe-icon coral">❤️</div>
+          <div class="pipe-body">
+            <h4>Blood Pressure — LOINC 8480-6 / 8462-4</h4>
+            <p>&gt;130/80 = hypertension stage 1. Persistently elevated BP combined with other risk factors drives cardiovascular hospitalization. HEDIS measure: % of hypertensives with BP &lt;140/90.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════ -->
+  <!-- TAB 4: MEASUREMENT                        -->
+  <!-- ══════════════════════════════════════════ -->
+  <div class="tab-panel" id="tab-measurement">
+    <p class="section-title">The <em>Measurement Framework</em></p>
+    <p class="section-desc">Once data is centralized and normalized, how do you actually measure whether Aledade's interventions are working? The framework follows the same structure as compliance impact analytics — establish baseline, measure intervention, attribute outcomes, benchmark against peers.</p>
+
+    <table class="meas-table">
+      <thead>
+        <tr>
+          <th style="width:22%">Metric</th>
+          <th style="width:22%">Data Required</th>
+          <th style="width:28%">How to Measure</th>
+          <th style="width:28%">The Causality Challenge</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <div class="metric-name">Hospitalization Avoidance</div>
+            <div class="metric-sub">Primary target of ACO model</div>
+            <span class="badge coral">Highest Value</span>
+          </td>
+          <td style="color:var(--text3); font-size:12px;">Inpatient claims · Historical baseline · Comparison population · Risk adjustment data</td>
+          <td style="color:var(--text3); font-size:12px;">Hospitalizations per 1,000 attributed patients/year vs benchmark and vs pre-Aledade trajectory. Risk-adjust for patient complexity before comparing across practices.</td>
+          <td style="color:var(--text3); font-size:12px;">Difference-in-differences vs non-Aledade practices. Propensity score matching to find comparable patients. Interrupted time series showing trajectory change at intervention start.</td>
+        </tr>
+        <tr>
+          <td>
+            <div class="metric-name">30-Day Readmission Rate</div>
+            <div class="metric-sub">Care coordination signal</div>
+            <span class="badge coral">High Value</span>
+          </td>
+          <td style="color:var(--text3); font-size:12px;">Inpatient claims with admission/discharge dates · ADT post-discharge follow-up data · 7-day PCP visit claims</td>
+          <td style="color:var(--text3); font-size:12px;">Readmissions within 30 days per 1,000 discharges. Track whether post-discharge follow-up appointments (within 7 days) reduce readmission rates — measurable intervention-to-outcome chain.</td>
+          <td style="color:var(--text3); font-size:12px;">ADT notification → care manager outreach → PCP follow-up → readmission avoided. Each step in the chain is measurable. The causal chain is clearer here than for primary prevention.</td>
+        </tr>
+        <tr>
+          <td>
+            <div class="metric-name">Care Gap Closure Rate</div>
+            <div class="metric-sub">HEDIS quality driver</div>
+            <span class="badge amber">High Volume</span>
+          </td>
+          <td style="color:var(--text3); font-size:12px;">EHR lab data · Claims for screening procedures · Outreach tracking · Clinical guidelines for gap definitions</td>
+          <td style="color:var(--text3); font-size:12px;">Full funnel: gaps identified → patients outreached → contacts made → gaps closed → time to closure. % of diabetics with HbA1c &lt;8%, % hypertensives with BP &lt;140/90, % colonoscopies completed.</td>
+          <td style="color:var(--text3); font-size:12px;">Outreach attribution is cleaner — you can track whether care manager contact directly preceded gap closure. Compare closure rates for reached vs not-reached patients.</td>
+        </tr>
+        <tr>
+          <td>
+            <div class="metric-name">Chronic Disease Control</div>
+            <div class="metric-sub">Longitudinal outcome</div>
+            <span class="badge teal">Leading Indicator</span>
+          </td>
+          <td style="color:var(--text3); font-size:12px;">EHR lab data over time · LOINC-coded observations · Multiple measurements per patient · Longitudinal patient records</td>
+          <td style="color:var(--text3); font-size:12px;">% diabetics with HbA1c &lt;8% trending over time. Distribution shift — not just average but full distribution moving. EHR lab data is 3–6 months ahead of claims — a leading indicator for HEDIS submissions.</td>
+          <td style="color:var(--text3); font-size:12px;">Patient-level trajectory analysis — is HbA1c improving or worsening across successive measurements for a given patient. Compare trajectories for patients receiving active care management vs not.</td>
+        </tr>
+        <tr>
+          <td>
+            <div class="metric-name">Shared Savings Attribution</div>
+            <div class="metric-sub">Financial proof of value</div>
+            <span class="badge coral">Business Critical</span>
+          </td>
+          <td style="color:var(--text3); font-size:12px;">CMS benchmark calculations · Total claims spend · Quality score · Attribution file · Practice-level breakdown</td>
+          <td style="color:var(--text3); font-size:12px;">Savings = (Benchmark − Actual Spend) × Attribution count. Adjusted by quality score if below threshold. Broken down by practice, intervention type, and patient segment to identify what's driving performance.</td>
+          <td style="color:var(--text3); font-size:12px;">CMS benchmark formula is complex and contested — ACPT calculation can inaccurately predict spending. Aledade is actively advocating for fixes. Savings projections must account for benchmark methodology uncertainty.</td>
+        </tr>
+        <tr>
+          <td>
+            <div class="metric-name">Practice Benchmarking</div>
+            <div class="metric-sub">Peer comparison</div>
+            <span class="badge teal">Engagement Driver</span>
+          </td>
+          <td style="color:var(--text3); font-size:12px;">All metrics above across all practices · Practice characteristics (size, specialty, geography, patient complexity) · CMS public use files</td>
+          <td style="color:var(--text3); font-size:12px;">Compare each practice to peer cohort — same specialty, same market, same size tier. Rank on cost, quality, and care gap closure. Identify high performers and what they do differently.</td>
+          <td style="color:var(--text3); font-size:12px;">Risk adjustment critical here — a practice with a sicker panel should have higher costs. Must adjust for patient complexity and SDOH before comparing across practices. Cherry-picking concerns in peer design.</td>
+        </tr>
+        <tr>
+          <td>
+            <div class="metric-name">Care Manager Productivity</div>
+            <div class="metric-sub">Operational impact</div>
+            <span class="badge amber">Efficiency</span>
+          </td>
+          <td style="color:var(--text3); font-size:12px;">Outreach activity logs · Contact records · Gap closure outcomes · Care manager time tracking</td>
+          <td style="color:var(--text3); font-size:12px;">Patients outreached / care manager. Contact rate (% reached). Gap closure rate (% of contacts who closed a gap). Time from gap identification to closure. Improvement over time as tools improve.</td>
+          <td style="color:var(--text3); font-size:12px;">Directly analogous to analyst efficiency metrics — items reviewed per analyst before and after the pre-scored queue. Same productivity measurement framework, different human reviewer.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="pipeline">
+      <div class="pipeline-title">The Full Measurement Stack — From Data to Impact</div>
+      <div class="pipeline-steps">
+        <div class="pipe-step">
+          <div class="pipe-icon teal">📥</div>
+          <div class="pipe-body">
+            <h4>Layer 1 — Data Ingestion</h4>
+            <p>Claims (3–6mo lag) · EHR (real-time) · ADT feeds (real-time) · Pharmacy (monthly) · Patient-reported (periodic)</p>
+          </div>
+        </div>
+        <div class="pipe-step">
+          <div class="pipe-icon teal">🔧</div>
+          <div class="pipe-body">
+            <h4>Layer 2 — Normalization</h4>
+            <p>Entity resolution · ICD-10/LOINC/RxNorm code normalization · Attribution reconciliation · Temporal alignment across lag profiles</p>
+          </div>
+        </div>
+        <div class="pipe-step">
+          <div class="pipe-icon amber">📊</div>
+          <div class="pipe-body">
+            <h4>Layer 3 — Measurement</h4>
+            <p>Utilization metrics · HEDIS quality measures · Care gap closure rates · Chronic disease control · Shared savings calculations</p>
+          </div>
+        </div>
+        <div class="pipe-step">
+          <div class="pipe-icon amber">🔗</div>
+          <div class="pipe-body">
+            <h4>Layer 4 — Attribution & Causality</h4>
+            <p>Baseline comparison · Peer benchmarking · Intervention-to-outcome tracing · Risk adjustment · Difference-in-differences analysis</p>
+          </div>
+        </div>
+        <div class="pipe-step">
+          <div class="pipe-icon coral">📈</div>
+          <div class="pipe-body">
+            <h4>Layer 5 — Impact Analytics Products</h4>
+            <p>Practice performance dashboards · Shared savings projections · Care gap closure funnels · Peer benchmarking reports · Network-level trend publications</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════ -->
+  <!-- TAB 5: YOUR PARALLEL                      -->
+  <!-- ══════════════════════════════════════════ -->
+  <div class="tab-panel" id="tab-parallel">
+    <p class="section-title">Your Work <em>Translated</em></p>
+    <p class="section-desc">Every system you've built in regulatory compliance has a direct healthcare equivalent. The domain shifts from internet pharmacies and dangerous products to patients and primary care — the architecture, methodology, and design philosophy are identical.</p>
+
+    <div class="stat-row">
+      <div class="stat-box">
+        <div class="stat-num">97%</div>
+        <div class="stat-label">Internet pharmacies operating illegally before monitoring</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-num amber">&lt;1%</div>
+        <div class="stat-label">Violation ratio after end-to-end risk pipeline</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-num coral">$500M</div>
+        <div class="stat-label">Google DOJ forfeiture for rogue pharmacy ads</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-num">$5.3T</div>
+        <div class="stat-label">US healthcare spend — much of it preventable</div>
+      </div>
+    </div>
+
+    <div class="parallel-grid">
+      <div class="parallel-row">
+        <div class="parallel-cell">
+          <div class="parallel-label left">Your Work</div>
+          <div class="parallel-left">Similarity matching — known bad product → find similar listings without model training</div>
+        </div>
+        <div class="parallel-arrow">⟷</div>
+        <div class="parallel-cell">
+          <div class="parallel-label right">Healthcare Equivalent</div>
+          <div class="parallel-right">Patient phenotyping — known disease profile → find similar patients at risk using algorithmic matching</div>
+        </div>
+      </div>
+      <div class="parallel-row">
+        <div class="parallel-cell">
+          <div class="parallel-label left">Your Work</div>
+          <div class="parallel-left">Likelihood × impact risk scoring mapped to matched regulatory alerts and products</div>
+        </div>
+        <div class="parallel-arrow">⟷</div>
+        <div class="parallel-cell">
+          <div class="parallel-label right">Healthcare Equivalent</div>
+          <div class="parallel-right">Patient risk stratification — probability of hospitalization × severity of condition → prioritized outreach list</div>
+        </div>
+      </div>
+      <div class="parallel-row">
+        <div class="parallel-cell">
+          <div class="parallel-label left">Your Work</div>
+          <div class="parallel-left">Pre-scored analyst review queue — risk already identified, classified, and explained before human opens the system</div>
+        </div>
+        <div class="parallel-arrow">⟷</div>
+        <div class="parallel-cell">
+          <div class="parallel-label right">Healthcare Equivalent</div>
+          <div class="parallel-right">Prioritized care gap outreach list for care managers — patients ranked by risk, gaps already identified and explained</div>
+        </div>
+      </div>
+      <div class="parallel-row">
+        <div class="parallel-cell">
+          <div class="parallel-label left">Your Work</div>
+          <div class="parallel-left">EU Safety Gate alert ingestion pipeline — real-time multilingual regulatory alert monitoring across jurisdictions</div>
+        </div>
+        <div class="parallel-arrow">⟷</div>
+        <div class="parallel-cell">
+          <div class="parallel-label right">Healthcare Equivalent</div>
+          <div class="parallel-right">ADT event notification ingestion — real-time hospital admission alerts triggering immediate care coordination</div>
+        </div>
+      </div>
+      <div class="parallel-row">
+        <div class="parallel-cell">
+          <div class="parallel-label left">Your Work</div>
+          <div class="parallel-left">Client dashboards — violation rate trends over time, before-and-after program performance, peer benchmarking</div>
+        </div>
+        <div class="parallel-arrow">⟷</div>
+        <div class="parallel-cell">
+          <div class="parallel-label right">Healthcare Equivalent</div>
+          <div class="parallel-right">Practice performance dashboards — quality measure trends, before/after Aledade, peer ACO benchmarking</div>
+        </div>
+      </div>
+      <div class="parallel-row">
+        <div class="parallel-cell">
+          <div class="parallel-label left">Your Work</div>
+          <div class="parallel-left">Rule effectiveness reports — did this detection rule actually improve precision and recall</div>
+        </div>
+        <div class="parallel-arrow">⟷</div>
+        <div class="parallel-cell">
+          <div class="parallel-label right">Healthcare Equivalent</div>
+          <div class="parallel-right">Care gap closure attribution — did this specific outreach intervention cause this specific gap to close</div>
+        </div>
+      </div>
+      <div class="parallel-row">
+        <div class="parallel-cell">
+          <div class="parallel-label left">Your Work</div>
+          <div class="parallel-left">Marketplace risk benchmarking program — platforms vs industry peers on violation rates by category</div>
+        </div>
+        <div class="parallel-arrow">⟷</div>
+        <div class="parallel-cell">
+          <div class="parallel-label right">Healthcare Equivalent</div>
+          <div class="parallel-right">ACO practice benchmarking — practices vs peer cohort on cost, quality measures, and care gap closure rates</div>
+        </div>
+      </div>
+      <div class="parallel-row">
+        <div class="parallel-cell">
+          <div class="parallel-label left">Your Work</div>
+          <div class="parallel-left">GLP-1 surge analysis — trend analysis of regulatory violations at population scale, published as industry intelligence</div>
+        </div>
+        <div class="parallel-arrow">⟷</div>
+        <div class="parallel-cell">
+          <div class="parallel-label right">Healthcare Equivalent</div>
+          <div class="parallel-right">Epidemiological trend analysis — drug utilization trends, disease incidence patterns, population health intelligence reports</div>
+        </div>
+      </div>
+      <div class="parallel-row">
+        <div class="parallel-cell">
+          <div class="parallel-label left">Your Work</div>
+          <div class="parallel-left">Re-emergence detection without model training — adaptive, explainable, generalizes to new categories immediately</div>
+        </div>
+        <div class="parallel-arrow">⟷</div>
+        <div class="parallel-cell">
+          <div class="parallel-label right">Healthcare Equivalent</div>
+          <div class="parallel-right">Novel adverse event signal detection — identifying new risk patterns before labeled training data exists</div>
+        </div>
+      </div>
+      <div class="parallel-row">
+        <div class="parallel-cell">
+          <div class="parallel-label left">Your Work</div>
+          <div class="parallel-left">Explainable decision insights for analysts — not just a score but a reason, so humans can confirm with confidence</div>
+        </div>
+        <div class="parallel-arrow">⟷</div>
+        <div class="parallel-cell">
+          <div class="parallel-label right">Healthcare Equivalent</div>
+          <div class="parallel-right">Clinical decision support with auditable reasoning — physicians confirm AI recommendations with full evidence trail, addressing alert fatigue</div>
+        </div>
+      </div>
+      <div class="parallel-row">
+        <div class="parallel-cell">
+          <div class="parallel-label left">Your Work</div>
+          <div class="parallel-left">Analyst efficiency metrics — throughput before and after pre-scored queue, time to action, queue clearance rate</div>
+        </div>
+        <div class="parallel-arrow">⟷</div>
+        <div class="parallel-cell">
+          <div class="parallel-label right">Healthcare Equivalent</div>
+          <div class="parallel-right">Care manager productivity analytics — patients outreached, contact rate, gap closure rate, time from identification to closure</div>
+        </div>
+      </div>
+      <div class="parallel-row">
+        <div class="parallel-cell">
+          <div class="parallel-label left">Your Work</div>
+          <div class="parallel-left">Data centralization into unified lakehouse — Bronze/Silver/Gold architecture, increasing scalability and cross-team efficiency</div>
+        </div>
+        <div class="parallel-arrow">⟷</div>
+        <div class="parallel-cell">
+          <div class="parallel-label right">Healthcare Equivalent</div>
+          <div class="parallel-right">Multi-EHR data centralization — normalizing claims, EHR, ADT, and pharmacy data from 3,000 practices into a unified analytics layer</div>
+        </div>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <div class="pipeline">
+      <div class="pipeline-title">The Interview Answer — How To Frame Your Background</div>
+      <div class="pipeline-steps">
+        <div class="pipe-step">
+          <div class="pipe-icon teal">💬</div>
+          <div class="pipe-body">
+            <h4>On your technical background</h4>
+            <p>"I've been building regulatory intelligence pipelines for a decade — automated ingestion, entity resolution, risk scoring, and impact analytics. The architecture maps directly to what Aledade builds for primary care: the data sources shift from regulatory databases to claims and EHR, the risk signals shift from product violations to patient deterioration, and the human reviewer shifts from a compliance analyst to a care manager — but the system design is the same."</p>
+          </div>
+        </div>
+        <div class="pipe-step">
+          <div class="pipe-icon amber">💬</div>
+          <div class="pipe-body">
+            <h4>On the healthcare domain gap</h4>
+            <p>"My direct experience is in public health surveillance rather than clinical data — but the regulatory frameworks governing pharmaceuticals, medical devices, and controlled substances are the same frameworks Aledade's practices navigate. I understand how MSSP ACOs succeed in value-based care, I've been building with Medicare claims data in BigQuery, and I'm actively developing hands-on FHIR and EHR data experience."</p>
+          </div>
+        </div>
+        <div class="pipe-step">
+          <div class="pipe-icon coral">💬</div>
+          <div class="pipe-body">
+            <h4>On impact analytics specifically</h4>
+            <p>"I've built the before/after, benchmarking, and trend analytics that demonstrate program value — showing clients their violation ratio at onboarding vs currently, how they compare to peers, and what's driving the improvement. That's structurally identical to what the Impact Analytics team builds for ACO practices — the variables shift from violation rates to quality measures and cost benchmarks, but the analytical framework and the product design challenge are the same."</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  });
+</script>
+</body>
+</html>
