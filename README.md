@@ -1,1 +1,1 @@
-VBC_infographic
+VBC-Infographic
