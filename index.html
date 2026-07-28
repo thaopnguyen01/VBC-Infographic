@@ -405,12 +405,59 @@
   .stat-num.coral { color: var(--coral); }
   .stat-label { font-size: 12px; color: var(--text3); line-height: 1.4; }
 
+  /* ── CODE BLOCK ── */
+  .code-block {
+    background: var(--navy);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 18px 20px;
+    font-family: 'Courier New', monospace;
+    font-size: 12px;
+    color: var(--cream2);
+    line-height: 1.6;
+    overflow-x: auto;
+    margin-bottom: 20px;
+    white-space: pre;
+  }
+  .code-block .k { color: var(--teal2); }
+  .code-block .v { color: var(--amber); }
+  .code-caption {
+    font-size: 11px; color: var(--text3);
+    margin: -8px 0 20px; font-style: italic;
+  }
+
+  /* ── GLOSSARY ── */
+  .glossary-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4px 32px;
+    margin-bottom: 28px;
+  }
+  .gloss-item {
+    padding: 11px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .gloss-term {
+    font-size: 13px; font-weight: 700;
+    color: var(--teal2); margin-bottom: 3px;
+  }
+  .gloss-term .full { color: var(--text3); font-weight: 400; font-size: 11px; }
+  .gloss-def { font-size: 12.5px; color: var(--cream2); line-height: 1.5; }
+  .gloss-category {
+    font-size: 11px; font-weight: 700;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--amber); margin: 24px 0 8px;
+    grid-column: 1 / -1;
+  }
+  .gloss-category:first-child { margin-top: 0; }
+
   @media (max-width: 640px) {
     .header { padding: 28px 20px 0; }
     .content { padding: 28px 20px 60px; }
     .data-stack { grid-template-columns: 1fr; }
     .parallel-row { grid-template-columns: 1fr; }
     .parallel-arrow { display: none; }
+    .glossary-grid { grid-template-columns: 1fr; }
   }
 </style>
 </head>
@@ -420,13 +467,16 @@
   <div class="header-inner">
     <p class="header-eyebrow">Healthcare Intelligence · Value-Based Care · by Thao Nguyen</p>
     <h1>How Value-Based Care Works</h1>
-    <p class="header-sub">A structured overview of the ecosystem, patient lifecycle, data infrastructure, and measurement framework — and how a decade of public health surveillance work maps directly to healthcare analytics.</p>
+    <p class="header-sub">A structured overview of the ecosystem, patient lifecycle, coding systems, claims lifecycle, FHIR, quality measures, regulatory landscape, and measurement framework — plus a full glossary and how a decade of public health surveillance work maps directly to healthcare analytics.</p>
     <div class="tab-bar">
       <button class="tab-btn active" data-tab="ecosystem">Ecosystem</button>
       <button class="tab-btn" data-tab="lifecycle">Patient Lifecycle & Costs</button>
       <button class="tab-btn" data-tab="data">Data Foundation</button>
+      <button class="tab-btn" data-tab="coding">Coding, Claims & FHIR</button>
+      <button class="tab-btn" data-tab="quality">Quality & Regulatory</button>
       <button class="tab-btn" data-tab="measurement">Measurement</button>
       <button class="tab-btn" data-tab="parallel">My Parallel</button>
+      <button class="tab-btn" data-tab="glossary">Glossary</button>
     </div>
   </div>
 </div>
@@ -473,13 +523,13 @@
       <div class="card teal-accent">
         <span class="card-icon">🏛️</span>
         <div class="card-label">Who regulates & pays</div>
-        <h3>CMS — Centers for Medicare & Medicaid Services</h3>
-        <p>Sets ACO program rules, benchmarks, quality measures, and payment terms. Runs MSSP — the Medicare Shared Savings Program — the flagship value-based care contract vehicle.</p>
+        <h3>CMS (Centers for Medicare & Medicaid Services)</h3>
+        <p>Sets ACO program rules, benchmarks, quality measures, and payment terms. Runs MSSP (Medicare Shared Savings Program) — the flagship value-based care contract vehicle.</p>
       </div>
       <div class="card amber-accent">
         <span class="card-icon">🤝</span>
         <div class="card-label">The enabler</div>
-        <h3>ACO Enablement Companies</h3>
+        <h3>ACO (Accountable Care Organization) Enablement Companies</h3>
         <p>Organizations that provide data analytics, workflow tools, payer contracts, and coaching to help independent practices participate and succeed in value-based care programs at scale.</p>
       </div>
       <div class="card amber-accent">
@@ -514,17 +564,17 @@
       <div class="card">
         <div class="card-label">Attribution</div>
         <h3>Patient Assignment</h3>
-        <p>Patients are assigned to an ACO based on which primary care physician they visit most. The ACO is then responsible for that patient's total cost of care — including specialists and hospitalizations.</p>
+        <p>Patients are assigned to an ACO based on which primary care physician they visit most. The ACO is then responsible for that patient's total cost of care (TCC) — including specialists and hospitalizations.</p>
       </div>
       <div class="card">
         <div class="card-label">Quality Measures</div>
-        <h3>HEDIS & eCQMs</h3>
+        <h3>HEDIS (Healthcare Effectiveness Data and Information Set) & eCQMs (electronic Clinical Quality Measures)</h3>
         <p>Clinical performance metrics ACOs must hit — diabetes control, blood pressure management, cancer screenings. Poor quality scores reduce shared savings even if cost targets are met.</p>
       </div>
       <div class="card">
         <div class="card-label">Risk Adjustment</div>
-        <h3>HCC Coding</h3>
-        <p>Hierarchical Condition Categories. Adjusts payments based on patient complexity — sicker patients generate higher risk scores and higher expected costs. Accurate documentation is critical.</p>
+        <h3>HCC (Hierarchical Condition Category) Coding</h3>
+        <p>Adjusts payments based on patient complexity — sicker patients generate higher risk scores and higher expected costs. Accurate documentation is critical.</p>
       </div>
       <div class="card">
         <div class="card-label">Care Gap</div>
@@ -605,7 +655,7 @@
         <span class="card-icon">🔄</span>
         <div class="card-label">Expensive failure mode</div>
         <h3>30-Day Readmission</h3>
-        <p>$15K–25K on top of the original stay. Signals a failure of care coordination. CMS penalizes hospitals for high readmission rates. ADT event notification is the key intervention tool.</p>
+        <p>$15K–25K on top of the original stay. Signals a failure of care coordination. CMS penalizes hospitals for high readmission rates. ADT (Admission, Discharge, Transfer) event notification is the key intervention tool.</p>
       </div>
       <div class="card amber-accent">
         <span class="card-icon">🚨</span>
@@ -617,12 +667,12 @@
         <span class="card-icon">💊</span>
         <div class="card-label">Lifetime cost accumulator</div>
         <h3>Chronic Disease</h3>
-        <p>Diabetes: $16,750/year vs $5,800 for non-diabetics. ESRD (dialysis): $90K+/year. The tragedy — early intervention costs hundreds. Downstream complications cost hundreds of thousands.</p>
+        <p>Diabetes: $16,750/year vs $5,800 for non-diabetics. ESRD (End-Stage Renal Disease, i.e. dialysis): $90K+/year. The tragedy — early intervention costs hundreds. Downstream complications cost hundreds of thousands.</p>
       </div>
       <div class="card teal-accent">
         <span class="card-icon">🧠</span>
         <div class="card-label">Underappreciated driver</div>
-        <h3>Social Determinants of Health</h3>
+        <h3>SDOH (Social Determinants of Health)</h3>
         <p>Housing instability raises hospitalization rates 30%. Food insecurity raises costs 27%. Lowest income quartile costs 3–4× more than highest. SDOH screening is now part of the ACO toolkit.</p>
       </div>
       <div class="card teal-accent">
@@ -640,12 +690,12 @@
       <div class="flow-step">
         <div class="flow-num">01</div>
         <div class="flow-title">Credentialing</div>
-        <div class="flow-desc">License verification, NPI registration, exclusion screening, payer enrollment</div>
+        <div class="flow-desc">License verification, NPI (National Provider Identifier) registration, exclusion screening, payer enrollment</div>
       </div>
       <div class="flow-step">
         <div class="flow-num">02</div>
         <div class="flow-title">VBC Onboarding</div>
-        <div class="flow-desc">EHR integration, panel attribution, baseline analytics, workflow training</div>
+        <div class="flow-desc">EHR (Electronic Health Record) integration, panel attribution, baseline analytics, workflow training</div>
       </div>
       <div class="flow-step">
         <div class="flow-num">03</div>
@@ -691,7 +741,7 @@
           <div class="pipe-icon teal">🏥</div>
           <div class="pipe-body">
             <h4>EHR Data — The Clinical Detail</h4>
-            <p>Lab results, vital signs, diagnoses, medications, care plan notes flowing from each practice's EHR. Near real-time but narrow — only what happened at that specific practice. Unstructured physician notes require NLP to extract structured signal.</p>
+            <p>Lab results, vital signs, diagnoses, medications, care plan notes flowing from each practice's EHR. Near real-time but narrow — only what happened at that specific practice. Unstructured physician notes require NLP (Natural Language Processing) to extract structured signal.</p>
           </div>
         </div>
         <div class="pipe-step">
@@ -712,7 +762,7 @@
           <div class="pipe-icon navy">📊</div>
           <div class="pipe-body">
             <h4>Patient-Reported Data — SDOH & Experience</h4>
-            <p>CAHPS surveys, SDOH screenings, patient satisfaction scores. Less structured and harder to aggregate but increasingly important for quality measures and identifying social risk factors that predict poor health outcomes.</p>
+            <p>CAHPS (Consumer Assessment of Healthcare Providers and Systems) surveys, SDOH screenings, patient satisfaction scores. Less structured and harder to aggregate but increasingly important for quality measures and identifying social risk factors that predict poor health outcomes.</p>
           </div>
         </div>
       </div>
@@ -788,6 +838,263 @@
             <p>&gt;130/80 = hypertension stage 1. Persistently elevated BP combined with other risk factors drives cardiovascular hospitalization. HEDIS measure: % of hypertensives with BP &lt;140/90.</p>
           </div>
         </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════ -->
+  <!-- TAB: CODING, CLAIMS & FHIR                -->
+  <!-- ══════════════════════════════════════════ -->
+  <div class="tab-panel" id="tab-coding">
+    <p class="section-title">Coding Systems, the <em>Claims Lifecycle</em> & FHIR</p>
+    <p class="section-desc">Two layers that get confused often: coding systems are vocabularies — dictionaries of codes with no shape of their own. Claims (X12 EDI) and FHIR are the two container formats that carry those codes between systems. This section walks the code from an encounter to a paid claim, then shows the same codes riding inside FHIR.</p>
+
+    <div class="pipeline">
+      <div class="pipeline-title">The Claims Lifecycle — Encounter to Analytics</div>
+      <div class="pipeline-steps">
+        <div class="pipe-step">
+          <div class="pipe-icon navy">🩺</div>
+          <div class="pipe-body">
+            <h4>1. Encounter</h4>
+            <p>Patient sees a provider — office visit, hospital stay, pharmacy fill. The provider documents what happened.</p>
+          </div>
+        </div>
+        <div class="pipe-step">
+          <div class="pipe-icon teal">🔤</div>
+          <div class="pipe-body">
+            <h4>2. Coding</h4>
+            <p>The encounter is translated into ICD-10-CM (diagnosis), CPT/HCPCS (procedure), and NDC/RxNorm (drug) codes.</p>
+          </div>
+        </div>
+        <div class="pipe-step">
+          <div class="pipe-icon teal">📄</div>
+          <div class="pipe-body">
+            <h4>3. Claim generation — X12 837</h4>
+            <p>The billing system packages coded data into a standardized EDI (Electronic Data Interchange) transaction: the 837P (professional) or 837I (institutional) claim.</p>
+          </div>
+        </div>
+        <div class="pipe-step">
+          <div class="pipe-icon amber">🧹</div>
+          <div class="pipe-body">
+            <h4>4. Clearinghouse</h4>
+            <p>The claim routes through a clearinghouse that scrubs for errors — bad codes, missing fields, eligibility mismatches — before forwarding to the payer.</p>
+          </div>
+        </div>
+        <div class="pipe-step">
+          <div class="pipe-icon amber">✅</div>
+          <div class="pipe-body">
+            <h4>5. Payer adjudication</h4>
+            <p>The insurer or Medicare Administrative Contractor (MAC) checks eligibility, medical necessity, and contract terms, then decides pay, deny, or partial pay.</p>
+          </div>
+        </div>
+        <div class="pipe-step">
+          <div class="pipe-icon coral">📬</div>
+          <div class="pipe-body">
+            <h4>6. Remittance — X12 835</h4>
+            <p>The payer sends back an 835 remittance advice — the payment or denial decision — flowing back through the clearinghouse to the provider.</p>
+          </div>
+        </div>
+        <div class="pipe-step">
+          <div class="pipe-icon coral">📈</div>
+          <div class="pipe-body">
+            <h4>7. Downstream analytics</h4>
+            <p>Adjudicated claims land in a warehouse and feed HCC risk scores, HEDIS quality measures, and ACO total cost of care. For Medicare ACOs specifically, CMS returns this stream as CCLF (Claim and Claims Line Feed) files.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <p class="section-title" style="font-size:20px; margin-bottom:16px;">Coding Systems — the Vocabularies</p>
+    <div class="card-grid">
+      <div class="card teal-accent">
+        <div class="card-label">Diagnosis · the "why"</div>
+        <h3>ICD-10-CM</h3>
+        <p>International Classification of Diseases, 10th Revision, Clinical Modification. <code>E11.9</code> = type 2 diabetes without complications. ~70,000 codes. Drives HCC risk adjustment and medical necessity checks.</p>
+      </div>
+      <div class="card teal-accent">
+        <div class="card-label">Procedure · the "what"</div>
+        <h3>CPT</h3>
+        <p>Current Procedural Terminology, maintained by the AMA (American Medical Association). <code>99213</code> = standard office visit. Drives reimbursement via RVUs (Relative Value Units).</p>
+      </div>
+      <div class="card teal-accent">
+        <div class="card-label">Extends CPT</div>
+        <h3>HCPCS</h3>
+        <p>Healthcare Common Procedure Coding System. Covers what CPT doesn't — ambulance, durable medical equipment, drugs administered in clinic. Used heavily in Medicare claims.</p>
+      </div>
+      <div class="card amber-accent">
+        <div class="card-label">Specific drug product</div>
+        <h3>NDC</h3>
+        <p>National Drug Code. Unique ID per manufacturer, drug, and package size. Appears on pharmacy claims — one clinical drug can have dozens of NDCs.</p>
+      </div>
+      <div class="card amber-accent">
+        <div class="card-label">Normalized drug name</div>
+        <h3>RxNorm</h3>
+        <p>Standard nomenclature linking drug names, ingredients, dosages, and forms across systems — lets different NDCs map to one clinical drug concept.</p>
+      </div>
+      <div class="card amber-accent">
+        <div class="card-label">Lab / observation</div>
+        <h3>LOINC</h3>
+        <p>Logical Observation Identifiers Names and Codes. <code>4548-4</code> = HbA1c. Identifies what was measured — separate from the value and from the diagnosis it relates to.</p>
+      </div>
+      <div class="card coral-accent">
+        <div class="card-label">Deep clinical map</div>
+        <h3>SNOMED-CT</h3>
+        <p>Systematized Nomenclature of Medicine — Clinical Terms. Symptoms, findings, procedures, body structures, all in one hierarchy. More granular than ICD-10; EHRs use it internally, then translate down to ICD-10 for billing.</p>
+      </div>
+      <div class="card coral-accent">
+        <div class="card-label">Hospital stay bundle</div>
+        <h3>DRG</h3>
+        <p>Diagnosis Related Group. One bundled payment code covering a full inpatient admission instead of billing each procedure separately.</p>
+      </div>
+      <div class="card coral-accent">
+        <div class="card-label">Provider identity</div>
+        <h3>NPI</h3>
+        <p>National Provider Identifier. Unique ID for every physician, hospital, and pharmacy — links provider activity across claims, like a merchant ID.</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <p class="section-title" style="font-size:20px; margin-bottom:16px;">FHIR — the Container, Not the Vocabulary</p>
+    <p class="section-desc" style="margin-bottom:20px;">FHIR (Fast Healthcare Interoperability Resources) didn't invent new codes — it's the JSON envelope that says "here's a resource, here's what type, here's where the code goes, here's who it belongs to." The vocabularies above are what fill the slots. HL7 (Health Level Seven) is both the standards organization and FHIR's older, message-based predecessor (HL7 v2) — still common in hospitals but far less developer-friendly than FHIR's REST/JSON approach.</p>
+
+    <div class="data-stack">
+      <div class="stack-layer">
+        <h4>FHIR resource → vocabulary it carries</h4>
+        <div class="stack-item"><div class="stack-dot"></div><div><div class="stack-text">Condition</div><div class="stack-sub">ICD-10-CM (billing) or SNOMED-CT (clinical detail)</div></div></div>
+        <div class="stack-item"><div class="stack-dot amber"></div><div><div class="stack-text">Procedure</div><div class="stack-sub">CPT or HCPCS</div></div></div>
+        <div class="stack-item"><div class="stack-dot coral"></div><div><div class="stack-text">MedicationRequest</div><div class="stack-sub">RxNorm (NDC shows up more on the claims side)</div></div></div>
+        <div class="stack-item"><div class="stack-dot"></div><div><div class="stack-text">Observation</div><div class="stack-sub">LOINC — what was measured; the value sits alongside it</div></div></div>
+        <div class="stack-item"><div class="stack-dot amber"></div><div><div class="stack-text">Patient</div><div class="stack-sub">No code system — demographics, the anchor every other resource references</div></div></div>
+      </div>
+      <div class="stack-layer">
+        <h4>Claims vs EHR — the root-cause tradeoff</h4>
+        <div class="stack-item"><div class="stack-dot"></div><div><div class="stack-text">Why claims exist</div><div class="stack-sub">A byproduct of getting paid — only generated if billed, 3–6 month lag from adjudication</div></div></div>
+        <div class="stack-item"><div class="stack-dot amber"></div><div><div class="stack-text">Why EHR exists</div><div class="stack-sub">A byproduct of documenting care in real time, regardless of billing</div></div></div>
+        <div class="stack-item"><div class="stack-dot coral"></div><div><div class="stack-text">What EHR alone misses</div><div class="stack-sub">Out-of-network care — a claim reaches the payer even if the visit never touched this EHR</div></div></div>
+        <div class="stack-item"><div class="stack-dot"></div><div><div class="stack-text">Why platforms use both</div><div class="stack-sub">Claims give population-wide completeness but stale, code-only data; EHR gives depth and speed for one system's slice of care</div></div></div>
+      </div>
+    </div>
+
+    <div class="code-block"><span class="k">Observation</span> for an HbA1c result — <span class="k">code</span> says what was measured (LOINC), <span class="v">valueQuantity</span> says how much:
+{
+  "resourceType": "Observation",
+  "code": {"coding": [{"system": "loinc.org", "code": "4548-4", "display": "Hemoglobin A1c"}]},
+  "subject": {"reference": "Patient/1234"},
+  "valueQuantity": {"value": 7.2, "unit": "%"}
+}</div>
+    <p class="code-caption">Resources link by reference, not nesting — normalized, like foreign keys — not embedded blobs.</p>
+
+    <p class="section-title" style="font-size:20px; margin-bottom:16px;">Why This Gets Messy Across Hospitals</p>
+    <div class="pipeline">
+      <div class="pipeline-title">Multi-Source Normalization — Same Diagnosis, Three Hospitals</div>
+      <div class="pipeline-steps">
+        <div class="pipe-step">
+          <div class="pipe-icon teal">🏥</div>
+          <div class="pipe-body">
+            <h4>Hospital A (Epic) — clean</h4>
+            <p>Sends standard ICD-10-CM in the Condition resource. Passes through the normalization layer as-is.</p>
+          </div>
+        </div>
+        <div class="pipe-step">
+          <div class="pipe-icon amber">🏥</div>
+          <div class="pipe-body">
+            <h4>Hospital B (Cerner) — SNOMED only</h4>
+            <p>No ICD-10 at all. Gets run through a SNOMED→ICD-10 crosswalk and flagged "derived," not "source-native."</p>
+          </div>
+        </div>
+        <div class="pipe-step">
+          <div class="pipe-icon coral">🏥</div>
+          <div class="pipe-body">
+            <h4>Hospital C (legacy) — free text</h4>
+            <p>No structured coding array at all — just a text field. Routed to manual review or NLP extraction, with a data-quality flag attached.</p>
+          </div>
+        </div>
+        <div class="pipe-step">
+          <div class="pipe-icon navy">🗂️</div>
+          <div class="pipe-body">
+            <h4>Canonical schema</h4>
+            <p>All three land in one OMOP CDM (Observational Medical Outcomes Partnership Common Data Model)-shaped warehouse — but carrying different provenance and confidence flags, not treated as equally trustworthy.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════ -->
+  <!-- TAB: QUALITY & REGULATORY                 -->
+  <!-- ══════════════════════════════════════════ -->
+  <div class="tab-panel" id="tab-quality">
+    <p class="section-title">Quality Measures & <em>Regulatory Landscape</em></p>
+    <p class="section-desc">How CMS and payers evaluate whether value-based care is actually improving care, and the compliance frameworks governing the data underneath it.</p>
+
+    <p class="section-title" style="font-size:20px; margin-bottom:16px;">HEDIS & Quality Measures</p>
+    <div class="card-grid">
+      <div class="card teal-accent">
+        <h3>HEDIS</h3>
+        <p>Healthcare Effectiveness Data and Information Set — the most widely used quality measures, maintained by NCQA (National Committee for Quality Assurance).</p>
+      </div>
+      <div class="card teal-accent">
+        <h3>Diabetes care bundle</h3>
+        <p>HbA1c testing and control, blood pressure control, eye exam, nephropathy monitoring. Missing any one is a care gap.</p>
+      </div>
+      <div class="card teal-accent">
+        <h3>Colorectal cancer screening</h3>
+        <p>Patients 50–75 with a colonoscopy, FIT (Fecal Immunochemical Test), or Cologuard in the appropriate interval.</p>
+      </div>
+      <div class="card amber-accent">
+        <h3>Controlling high blood pressure</h3>
+        <p>% of hypertensive patients 18–85 with BP &lt;140/90 — high priority since uncontrolled hypertension drives hospitalizations.</p>
+      </div>
+      <div class="card amber-accent">
+        <h3>Medication adherence</h3>
+        <p>Whether patients actually take their meds — measured via pharmacy refill patterns.</p>
+      </div>
+      <div class="card amber-accent">
+        <h3>Annual wellness visit (AWV)</h3>
+        <p>A free yearly visit for Medicare patients — a key opportunity to identify and close care gaps.</p>
+      </div>
+      <div class="card coral-accent">
+        <h3>USPSTF</h3>
+        <p>US Preventive Services Task Force — the evidence-based guidelines care gap logic should reference.</p>
+      </div>
+      <div class="card coral-accent">
+        <h3>Star ratings</h3>
+        <p>CMS rates Medicare Advantage plans 1–5 stars based on quality measures. Higher stars = higher plan payments — plans pay physicians more to help hit 4–5 stars.</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <p class="section-title" style="font-size:20px; margin-bottom:16px;">Regulatory & Compliance</p>
+    <div class="card-grid">
+      <div class="card">
+        <h3>HIPAA</h3>
+        <p>Health Insurance Portability and Accountability Act. Governs privacy and security of PHI (Protected Health Information) — the 18 identifiers that make data personally identifiable.</p>
+      </div>
+      <div class="card">
+        <h3>De-identification</h3>
+        <p>Removing PHI so data can be used for research — Safe Harbor (remove all 18 identifiers) or Expert Determination methods.</p>
+      </div>
+      <div class="card">
+        <h3>SaMD</h3>
+        <p>Software as a Medical Device — software performing a medical function independently. Regulated by the FDA (Food and Drug Administration).</p>
+      </div>
+      <div class="card">
+        <h3>510(k)</h3>
+        <p>FDA clearance pathway for devices substantially equivalent to a previously cleared device — the most common pathway for clinical AI.</p>
+      </div>
+      <div class="card">
+        <h3>CDS exemption</h3>
+        <p>Clinical Decision Support software that supports but doesn't replace clinical judgment, where the physician can independently review the basis for a recommendation, may be exempt from FDA regulation.</p>
+      </div>
+      <div class="card">
+        <h3>EU AI Act</h3>
+        <p>The EU's AI regulation — classifies systems by risk level and mandates human oversight for high-risk systems. Healthcare AI is high-risk.</p>
+      </div>
+      <div class="card">
+        <h3>ONC Cures Rule</h3>
+        <p>Office of the National Coordinator for Health IT rule implementing the 21st Century Cures Act — requires EHR vendors to support FHIR APIs and prohibits information blocking.</p>
       </div>
     </div>
   </div>
@@ -1125,6 +1432,65 @@
         <a href="https://www.linkedin.com/in/thaopn1/" style="font-size:13px; color:var(--teal2); text-decoration:none; font-weight:500;">💼 LinkedIn</a>
         <a href="https://github.com/thaopnguyen01" style="font-size:13px; color:var(--teal2); text-decoration:none; font-weight:500;">⚙️ GitHub</a>
       </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════ -->
+  <!-- TAB: GLOSSARY                              -->
+  <!-- ══════════════════════════════════════════ -->
+  <div class="tab-panel" id="tab-glossary">
+    <p class="section-title">Glossary — Every <em>Abbreviation</em>, Defined</p>
+    <p class="section-desc">A single alphabetical reference for every acronym used across this document — organizations, coding systems, data standards, and metrics.</p>
+
+    <div class="glossary-grid">
+      <div class="gloss-category">Organizations & programs</div>
+      <div class="gloss-item"><div class="gloss-term">ACO <span class="full">Accountable Care Organization</span></div><div class="gloss-def">Providers coordinating care for a population, sharing in savings or losses vs. a benchmark.</div></div>
+      <div class="gloss-item"><div class="gloss-term">CMS <span class="full">Centers for Medicare & Medicaid Services</span></div><div class="gloss-def">Federal agency running Medicare/Medicaid; sets ACO rules and quality measures.</div></div>
+      <div class="gloss-item"><div class="gloss-term">MSSP <span class="full">Medicare Shared Savings Program</span></div><div class="gloss-def">CMS's flagship ACO program.</div></div>
+      <div class="gloss-item"><div class="gloss-term">PCMH <span class="full">Patient-Centered Medical Home</span></div><div class="gloss-def">A coordinated-care practice model, often a stepping stone to ACO participation.</div></div>
+      <div class="gloss-item"><div class="gloss-term">ONC <span class="full">Office of the National Coordinator for Health IT</span></div><div class="gloss-def">Implements the 21st Century Cures Act's interoperability rules.</div></div>
+      <div class="gloss-item"><div class="gloss-term">NCQA <span class="full">National Committee for Quality Assurance</span></div><div class="gloss-def">Maintains the HEDIS measure set.</div></div>
+      <div class="gloss-item"><div class="gloss-term">PBM <span class="full">Pharmacy Benefit Manager</span></div><div class="gloss-def">Manages drug benefits for payers — controls formularies and pricing.</div></div>
+      <div class="gloss-item"><div class="gloss-term">FDA <span class="full">Food and Drug Administration</span></div><div class="gloss-def">Regulates medical devices and software as a medical device.</div></div>
+
+      <div class="gloss-category">Data types & standards</div>
+      <div class="gloss-item"><div class="gloss-term">EHR <span class="full">Electronic Health Record</span></div><div class="gloss-def">Rich, near-real-time clinical data — narrow to one health system.</div></div>
+      <div class="gloss-item"><div class="gloss-term">ADT <span class="full">Admission, Discharge, Transfer</span></div><div class="gloss-def">Real-time hospital event alerts.</div></div>
+      <div class="gloss-item"><div class="gloss-term">SDOH <span class="full">Social Determinants of Health</span></div><div class="gloss-def">Non-clinical drivers of outcomes — housing, food security, income.</div></div>
+      <div class="gloss-item"><div class="gloss-term">HL7 <span class="full">Health Level Seven</span></div><div class="gloss-def">The standards org, and the older v2 messaging format FHIR replaced.</div></div>
+      <div class="gloss-item"><div class="gloss-term">FHIR <span class="full">Fast Healthcare Interoperability Resources</span></div><div class="gloss-def">Modern REST/JSON standard for exchanging clinical data.</div></div>
+      <div class="gloss-item"><div class="gloss-term">OMOP CDM <span class="full">Observational Medical Outcomes Partnership Common Data Model</span></div><div class="gloss-def">A standard schema normalizing EHR and claims data for research.</div></div>
+      <div class="gloss-item"><div class="gloss-term">CCLF <span class="full">Claim and Claims Line Feed</span></div><div class="gloss-def">CMS's claims data file delivered to ACOs.</div></div>
+      <div class="gloss-item"><div class="gloss-term">EDI <span class="full">Electronic Data Interchange</span></div><div class="gloss-def">The X12 transaction format claims travel in (837, 835).</div></div>
+      <div class="gloss-item"><div class="gloss-term">NLP <span class="full">Natural Language Processing</span></div><div class="gloss-def">Extracting structured signal from free-text clinical notes.</div></div>
+      <div class="gloss-item"><div class="gloss-term">CAHPS <span class="full">Consumer Assessment of Healthcare Providers and Systems</span></div><div class="gloss-def">Standardized patient experience surveys.</div></div>
+
+      <div class="gloss-category">Coding systems</div>
+      <div class="gloss-item"><div class="gloss-term">ICD-10(-CM) <span class="full">International Classification of Diseases, 10th Rev. (Clinical Modification)</span></div><div class="gloss-def">Diagnosis codes — the "why."</div></div>
+      <div class="gloss-item"><div class="gloss-term">CPT <span class="full">Current Procedural Terminology</span></div><div class="gloss-def">Procedure/service codes — the "what was done."</div></div>
+      <div class="gloss-item"><div class="gloss-term">HCPCS <span class="full">Healthcare Common Procedure Coding System</span></div><div class="gloss-def">Extends CPT — DME, ambulance, in-clinic drugs.</div></div>
+      <div class="gloss-item"><div class="gloss-term">NDC <span class="full">National Drug Code</span></div><div class="gloss-def">Specific drug product identifier — manufacturer, dose, pack size.</div></div>
+      <div class="gloss-item"><div class="gloss-term">RxNorm</div><div class="gloss-def">Normalized drug nomenclature linking NDCs to one clinical concept.</div></div>
+      <div class="gloss-item"><div class="gloss-term">LOINC <span class="full">Logical Observation Identifiers Names and Codes</span></div><div class="gloss-def">Codes for labs and observations — what was measured.</div></div>
+      <div class="gloss-item"><div class="gloss-term">SNOMED-CT <span class="full">Systematized Nomenclature of Medicine — Clinical Terms</span></div><div class="gloss-def">The deep internal clinical vocabulary EHRs use before translating to ICD-10.</div></div>
+      <div class="gloss-item"><div class="gloss-term">DRG <span class="full">Diagnosis Related Group</span></div><div class="gloss-def">Bundled payment code for a full inpatient stay.</div></div>
+      <div class="gloss-item"><div class="gloss-term">NPI <span class="full">National Provider Identifier</span></div><div class="gloss-def">Unique ID for every provider, hospital, pharmacy.</div></div>
+
+      <div class="gloss-category">Metrics & measures</div>
+      <div class="gloss-item"><div class="gloss-term">HEDIS <span class="full">Healthcare Effectiveness Data and Information Set</span></div><div class="gloss-def">The most widely used quality measure set.</div></div>
+      <div class="gloss-item"><div class="gloss-term">eCQM <span class="full">electronic Clinical Quality Measure</span></div><div class="gloss-def">Digitally calculated quality measures pulled from EHR data.</div></div>
+      <div class="gloss-item"><div class="gloss-term">HCC <span class="full">Hierarchical Condition Category</span></div><div class="gloss-def">Risk-adjustment categories built from ICD-10 diagnoses.</div></div>
+      <div class="gloss-item"><div class="gloss-term">TCC <span class="full">Total Cost of Care</span></div><div class="gloss-def">Full spending across all settings for an attributed patient.</div></div>
+      <div class="gloss-item"><div class="gloss-term">RVU <span class="full">Relative Value Unit</span></div><div class="gloss-def">The reimbursement weight a CPT code maps to.</div></div>
+      <div class="gloss-item"><div class="gloss-term">USPSTF <span class="full">US Preventive Services Task Force</span></div><div class="gloss-def">Evidence-based preventive care screening guidelines.</div></div>
+      <div class="gloss-item"><div class="gloss-term">AWV <span class="full">Annual Wellness Visit</span></div><div class="gloss-def">Medicare's free yearly visit — an opportunity to close care gaps.</div></div>
+      <div class="gloss-item"><div class="gloss-term">HbA1c / eGFR</div><div class="gloss-def">Glycated hemoglobin (diabetes control) / estimated glomerular filtration rate (kidney function).</div></div>
+
+      <div class="gloss-category">Regulatory</div>
+      <div class="gloss-item"><div class="gloss-term">HIPAA <span class="full">Health Insurance Portability and Accountability Act</span></div><div class="gloss-def">Governs privacy/security of PHI.</div></div>
+      <div class="gloss-item"><div class="gloss-term">PHI <span class="full">Protected Health Information</span></div><div class="gloss-def">The 18 identifiers that make health data personally identifiable.</div></div>
+      <div class="gloss-item"><div class="gloss-term">SaMD <span class="full">Software as a Medical Device</span></div><div class="gloss-def">Software performing a medical function independently — FDA-regulated.</div></div>
+      <div class="gloss-item"><div class="gloss-term">CDS <span class="full">Clinical Decision Support</span></div><div class="gloss-def">Tools that support, not replace, clinical judgment — sometimes FDA-exempt.</div></div>
     </div>
   </div>
 
